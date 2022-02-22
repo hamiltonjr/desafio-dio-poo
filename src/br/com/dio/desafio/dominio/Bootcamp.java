@@ -61,13 +61,10 @@ public class Bootcamp<localDate> {
 
     @Override
     public String toString() {
-        return "Bootcamp{" +
-                "nome='" + nome + '\'' +
-                ", descrição='" + descrição + '\'' +
-                ", dataInicial=" + dataInicial +
-                ", dataFinal=" + dataFinal +
-                ", devsInscritos=" + devsInscritos +
-                ", conteudos=" + conteudos +
-                '}';
+        return  "Bootcamp\n" +
+                "Nome: " + nome + "\n" +
+                "Descrição: " + descrição + "\n" +
+                "Data Inicial: " + dataInicial + "\n" +
+                "Data Final: " + dataFinal + "\n";
     }
 }

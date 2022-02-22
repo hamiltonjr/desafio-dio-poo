@@ -5,9 +5,9 @@ import java.time.LocalDate;
 public class Mentoria extends Conteudo {
     private LocalDate data;
 
-    public Mentoria(String titulo, String descricao, LocalDate data) {
+    public Mentoria(String titulo, String descricao) {
         super(titulo, descricao);
-        this.data = data;
+        this.data = LocalDate.now().plusDays(10);
     }
 
     public LocalDate getData() {

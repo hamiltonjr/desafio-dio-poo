@@ -2,87 +2,114 @@ package br.com.dio.desafio.dominio;
 
 import jdk.swing.interop.SwingInterOpUtils;
 
-import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
-        // criando cursos
-        System.out.println("CURSOS");
-        Conteudo curso1 = new Curso(
-                "Java",
-                "Curso de Java",
-                8
+        // criando o bootcamp da plataforma
+        Bootcamp bootcamp = new Bootcamp<>(
+                "Front-end Developer",
+                "Nesse bootcamp o dev desenvolverá as habilidades básicas " +
+                        "para se tornar um Front-end Developer."
         );
-        System.out.println(curso1);
-        Conteudo curso2 = new Curso(
-                "JavaScript",
-                "Curso de JavaScript",
-                4
+
+        // mostrando o bootcamp (aqui posteriormente teremos um loop-for
+        System.out.println("Bootcamp(s) à disposição na plataforma:");
+        System.out.println("Nome: " + bootcamp.getNome());
+        System.out.println("descrição: " + bootcamp.getDescrição());
+
+        // criando os cursos desse bootcamp
+        Curso html5 = new Curso(
+                "HTML básico",
+                "Esse curso ensina o dev a escrever páginas HTML 5 para um " +
+                        "website que aparece no navegador.",
+                12
         );
-        System.out.println(curso2);
-
-        // criando mentoria
-        System.out.println("MENTORIAS");
-        Conteudo mentoria = new Mentoria(
-                "Mentoria de Java",
-                "descrição mentoria Java",
-                LocalDate.now()
-                );
-        System.out.println(mentoria);
-
-        // criando bootcamp e inserindo os conteúdos
-        System.out.println("BOOTCAMP");
-        System.out.println("O bootcamp tem 2 cursos e 1 mentoria");
-        Bootcamp b = new Bootcamp(
-                "Bootcamp Java Developer",
-                "Descrição Bootcamp Java Developer"
+        Curso css3 = new Curso(
+                "CSS3 básico",
+                "Esse curso ensina o dev a escrever folhas de estilo para um " +
+                        "website.",
+                18
         );
-        b.getConteudos().add(curso1);
-        b.getConteudos().add(curso2);
-        b.getConteudos().add(mentoria);
-        System.out.println(b);
+        Curso javascript = new Curso(
+                "javaScript básico",
+                "Esse curso ensina o dev a escrever usando a linguagem JavaScript " +
+                        "para dar mais vida e movimento à seu website.",
+                20
+        );
 
-        // criando devs
-        System.out.println("DEVs");
-        Dev dev1 = new Dev("Camila");
-        System.out.println(dev1);
-        Dev dev2 = new Dev("João");
-        System.out.println(dev2);
+        // detalha cursos do bootcamp (posteriormente um loop-for)
+        System.out.println("...com os cursos...");
+        System.out.println("1. Título....: " + html5.getTitulo());
+        System.out.println("   Descrição.: " + html5.getDescricao());
+        System.out.println("2. Nome......: " + css3.getTitulo());
+        System.out.println("   Descrição.: " + css3.getDescricao());
+        System.out.println("3. Nome......: " + javascript.getTitulo());
+        System.out.println("   Descrição.: " + javascript.getDescricao());
 
-        // inscrevendo devs no bootcamp
-        System.out.println("Devs aparecem inscritos no bootcamp...");
-        dev1.inscreverBootcamp(b);
-        System.out.println(dev1);
-        dev2.inscreverBootcamp(b);
-        System.out.println(dev2);
+        // criando uma mentoria para o bootcamp
+        Mentoria mentoria = new Mentoria(
+                "Mentoria Dev front-end",
+                "Essa mentoria coloca o dev em contato com especialistas que darão " +
+                        "preciosas dicas para turbinar o aprendizado."
+        );
+        System.out.println("... e mentoria marcada para " + mentoria.getData() + ".");
+        System.out.println("   Título....: " + mentoria.getTitulo());
+        System.out.println("   Descrição.: " + mentoria.getDescricao());
 
-        // mostrando conteúdos inscritos por devs
-        System.out.println("Conteúdos inscritos pelos devs");
-        System.out.println(dev1.getNome() + ": " + dev1.getConteudosInscritos());
-        System.out.println(dev2.getNome() + ": " + dev2.getConteudosInscritos());
+        // incluindo os conteúdos no bootcamp
+        bootcamp.getConteudos().add(html5);
+        bootcamp.getConteudos().add(css3);
+        bootcamp.getConteudos().add(javascript);
+        bootcamp.getConteudos().add(mentoria);
+        bootcamp.getConteudos().add(mentoria);
 
-        // mostrando conteúdos concluídos por devs
-        System.out.println("Conteúdos concluídos pelos devs");
-        System.out.println(dev1.getNome() + ": " + dev1.getConteudosConcluidos());
-        System.out.println(dev2.getNome() + ": " + dev2.getConteudosConcluidos());
+        // incluindo dev no bootcamp
+        System.out.print("Olá dev! Qual é seu nome?: ");
+        Scanner s = new Scanner(System.in);
+        String nome = s.nextLine();
+        Dev dev = new Dev(nome);
+        dev.inscreverBootcamp(bootcamp);
+        System.out.println("Você está inscrito em:\n" + bootcamp);
 
-        // progredindo...
-        System.out.println("Progredindo no bootcamp...");
-        dev1.progredir();
-        dev2.progredir();
+        // fazendo atividades
+        while (!dev.getConteudosInscritos().isEmpty()) {
+            System.out.println("Você tem " + dev.getConteudosInscritos().size() +
+                    " atividades para concluir o bootcamp.");
+            System.out.println("As atividades são:");
+            for (Conteudo conteudo : dev.getConteudosInscritos()) {
+                System.out.println(conteudo.getTitulo());
+            }
+            System.out.print("Fazer próxima atividade? [s/n/c]: ");
+            char c = s.nextLine().toLowerCase(Locale.ROOT).charAt(0);
+            if ( c == 's') {
+                dev.progredir();
+            } else if (c == 'n') {
+                continue;
+            } else if (c == 'c') {
+                break;
+            }
+        }
 
-        // mostrando conteúdos inscritos por devs
-        System.out.println("Conteúdos inscritos pelos devs");
-        System.out.println(dev1.getNome() + ": " + dev1.getConteudosInscritos());
-        System.out.println(dev2.getNome() + ": " + dev2.getConteudosInscritos());
-
-        // mostrando conteúdos concluídos por devs
-        System.out.println("Conteúdos concluídos pelos devs");
-        System.out.println(dev1.getNome() + ": " + dev1.getConteudosConcluidos());
-        System.out.println(dev2.getNome() + ": " + dev2.getConteudosConcluidos());
-
-
+        // despedida
+        if (dev.getConteudosInscritos().size() == 0) {
+            System.out.println("Parabéns! Você terminou o bootcamp!");
+            System.out.println("-------------------------------------------");
+            System.out.println("                CERTIFICADO");
+            System.out.println("  Certificamos que " + dev.getNome().toUpperCase());
+            System.out.println("  em " + bootcamp.getDataFinal());
+            System.out.println("  concluiu o bootcamp " + bootcamp.getNome());
+            System.out.println("  com carga horária de 50 horas.");
+            System.out.println("-------------------------------------------");
+        }
+        System.out.println("obrigado por acessar a plataforma!");
+        System.out.println("Continue a aprender... sempre!");
+        s.close();
 
     }
+
 }
+
